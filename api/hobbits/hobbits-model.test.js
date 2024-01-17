@@ -27,7 +27,26 @@ describe('getAll', () => {
 
 describe('getById', () => {
     test('resolves the hobbit by the given is', async () => {
-        const result = await Hobbit.getById(1)
+        let result = await Hobbit.getById(1)
         expect(result).toMatchObject({ name: 'sam' })
+        result = await Hobbit.getById(2)
+        expect(result).toMatchObject({ name: 'frodo' })
+        result = await Hobbit.getById(3)
+        expect(result).toMatchObject({ name: 'pippin' })
+        result = await Hobbit.getById(4)
+        expect(result).toMatchObject({ name: 'merry' })
+    })
+})
+
+describe('insert', () => {
+    const bilbo = { name: 'bilbo' }
+    test('resolve the newly created hobbit', async () => {
+        const result = await Hobbit.insert(bilbo)
+        expect(result).toMatchObject(bilbo)
+    })
+    test('adds the hobbit to the hobbits table', async () => {
+        await Hobbit.insert(bilbo)
+        const records = await db('hobbits')
+        expect(records).toHaveLength(5)
     })
 })
